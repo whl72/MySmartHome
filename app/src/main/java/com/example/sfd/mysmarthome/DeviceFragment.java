@@ -1,8 +1,10 @@
 package com.example.sfd.mysmarthome;
 
+import android.app.Fragment;
+
 /**
  * Created by SFD on 2018/1/31.
  */
 
-public class DeviceFragment {
+public class DeviceFragment extends Fragment {
 }
