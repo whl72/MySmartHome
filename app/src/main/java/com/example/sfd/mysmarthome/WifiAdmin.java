@@ -19,6 +19,14 @@ public class WifiAdmin {
 
     private String TAG = "WifiAdmin";
 
+    private int WIFI_STATE_DISABLING    = 0;
+    private int WIFI_STATE_DISABLED     = 1;
+    private int WIFI_STATE_ENABLING     = 2;
+    private int WIFI_STATE_ENABLED      = 3;
+    private int WIFI_STATE_UNKNOWN      = 4;
+
+    public static int level;
+
     private WifiManager mWifiManger;
     private WifiInfo mWifiInfo;
     //扫描出的WiFi列表
@@ -42,6 +50,19 @@ public class WifiAdmin {
         }else {
             Toast.makeText(context, "wifi已经开启！",
                     Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // 关闭WIFI
+    public void closeWifi(Context context) {
+        if (mWifiManger.isWifiEnabled()) {
+            mWifiManger.setWifiEnabled(false);
+        }else if(mWifiManger.getWifiState() == 1){
+            Toast.makeText(context,"亲，Wifi已经关闭，不用再关了", Toast.LENGTH_SHORT).show();
+        }else if (mWifiManger.getWifiState() == 0) {
+            Toast.makeText(context,"亲，Wifi正在关闭，不用再关了", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(context,"请重新关闭", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -93,13 +114,13 @@ public class WifiAdmin {
                 true);
     }
 
-    public void startScan(Context context){
+    public void startWifiScan(Context context){
         mWifiManger.startScan();
         //得到扫描结果
         List<ScanResult> results = mWifiManger.getScanResults();
         //得到配置好的网络连接
         mWifiConfList = mWifiManger.getConfiguredNetworks();
-        if(mWifiList == null){
+        if(results == null){
             switch (mWifiManger.getWifiState()){
                 case 3:
                     Toast.makeText(context, "当前区域没有无线网络",
@@ -135,7 +156,7 @@ public class WifiAdmin {
     }
 
     //得到网络列表
-    public List<ScanResult> getWfifiList(){
+    public List<ScanResult> getWifiList(){
         return mWifiList;
     }
 
@@ -199,4 +220,67 @@ public class WifiAdmin {
         mWifiManger.removeNetwork(netID);
     }
 
+    //然后是一个实际应用方法，只验证过没有密码的情况：
+
+    public WifiConfiguration createWifiInfo(String SSID, String Password, int Type)
+    {
+        WifiConfiguration config = new WifiConfiguration();
+        config.allowedAuthAlgorithms.clear();
+        config.allowedGroupCiphers.clear();
+        config.allowedKeyManagement.clear();
+        config.allowedPairwiseCiphers.clear();
+        config.allowedProtocols.clear();
+        config.SSID = "\"" + SSID + "\"";
+
+        WifiConfiguration tempConfig = this.IsExsits(SSID);
+        if(tempConfig != null) {
+            mWifiManger.removeNetwork(tempConfig.networkId);
+        }
+
+        if(Type == 1) //WIFICIPHER_NOPASS
+        {
+//            config.wepKeys[0] = "";
+            config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+//            config.wepTxKeyIndex = 0;
+        }
+        if(Type == 2) //WIFICIPHER_WEP
+        {
+            config.hiddenSSID = true;
+            config.wepKeys[0]= "\""+Password+"\"";
+            config.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.SHARED);
+            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
+            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
+            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP40);
+            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP104);
+            config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+            config.wepTxKeyIndex = 0;
+        }
+        if(Type == 3) //WIFICIPHER_WPA
+        {
+            config.preSharedKey = "\""+Password+"\"";
+            config.hiddenSSID = true;
+            config.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
+            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
+            config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
+            config.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.TKIP);
+            //config.allowedProtocols.set(WifiConfiguration.Protocol.WPA);
+            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
+            config.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP);
+            config.status = WifiConfiguration.Status.ENABLED;
+        }
+        return config;
+    }
+
+    private WifiConfiguration IsExsits(String SSID)
+    {
+        List<WifiConfiguration> existingConfigs = mWifiManger.getConfiguredNetworks();
+        for (WifiConfiguration existingConfig : existingConfigs)
+        {
+            if (existingConfig.SSID.equals("\""+SSID+"\""))
+            {
+                return existingConfig;
+            }
+        }
+        return null;
+    }
 }
