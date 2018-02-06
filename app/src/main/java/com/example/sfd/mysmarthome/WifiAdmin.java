@@ -11,6 +11,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.sfd.mysmarthome.WifiCommunication.WIFI_CONNECT_SUCCESS;
+
 /**
  * Created by SFD on 2018/2/1.
  */
@@ -208,6 +210,12 @@ public class WifiAdmin {
         boolean b = mWifiManger.enableNetwork(wcgID, true);
         Log.d(TAG, "a--"+wcgID);
         Log.d(TAG, "b--"+b);
+
+        if(b == true){
+            MyMessage.sendMyMessage(WIFI_CONNECT_SUCCESS);
+//            Toast.makeText(MyApplication.getContext(), "连接AP成功",
+//                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     //断开指定ID的网络
@@ -239,6 +247,7 @@ public class WifiAdmin {
 
         if(Type == 1) //WIFICIPHER_NOPASS
         {
+            config.hiddenSSID = true;
 //            config.wepKeys[0] = "";
             config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
 //            config.wepTxKeyIndex = 0;
