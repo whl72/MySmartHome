@@ -43,6 +43,7 @@ public class WifiCommunication extends Activity
     private final String AP_IP_ADDR = "192.168.4.1";
     private final int AP_IP_PORT = 5050;
     public static final int WIFI_CONNECT_SUCCESS = 1;
+    public final int RECEIVE_AP_DATA = 10;
     public final int SEND_AP_DATA = 11;
 
     private Button btnScan;
@@ -72,46 +73,13 @@ public class WifiCommunication extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wifi_communication);
 
-//        //必须调用该方法，否则滚动条无法拖动
-//        edtReceive.setMovementMethod(new ScrollingMovementMethod());
-
         getWindow().setSoftInputMode
                 ( WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
-
-//        AlertDialog.Builder dialog = new AlertDialog.Builder
-//                (this);
-//        dialog.setTitle("WIFI登录");
-//        LayoutInflater layoutInflater = LayoutInflater.from
-//                (MyApplication.getContext());
-//        final View myLogin = layoutInflater.inflate
-//                (R.layout.my_login_view, null);
-//        dialog.setView(myLogin);
-//        EditText loginAccountEt = (EditText) myLogin.
-//                findViewById(R.id.edit_ssid);
-//        EditText loginPasswordEt = (EditText) myLogin.
-//                findViewById(R.id.edit_key);
-//
-//        dialog.setPositiveButton("确定",
-//                new DialogInterface.OnClickListener(){
-//                    @Override
-//                    public void onClick(DialogInterface dialogInterface,
-//                                        int i) {
-//
-//                    }
-//                });
-//        dialog.setNegativeButton("取消", new DialogInterface.
-//                OnClickListener(){
-//            @Override
-//            public void onClick(DialogInterface dialogInterface, int i) {
-//
-//            }
-//        });
-//        dialog.show();
-
-
         mWifiAdmin = new WifiAdmin(MyApplication.getContext());
         initViews();
+        //必须调用该方法，否则滚动条无法拖动
+        textReceive.setMovementMethod(new ScrollingMovementMethod());
 
         mHandler = new Handler(){
             @Override
@@ -123,7 +91,12 @@ public class WifiCommunication extends Activity
 //                        exec.execute(tcpClient);
                         break;
                     case SEND_AP_DATA:
-                        textReceive.append(msg.obj.toString());
+                        textReceive.append("Tx: "+msg.obj.toString()+"\r\n");
+                        break;
+                    case RECEIVE_AP_DATA:
+                        textReceive.append("Rx: "+msg.obj.toString()+"\r\n");
+                        break;
+                    default:
                         break;
                 }
             }
@@ -134,6 +107,7 @@ public class WifiCommunication extends Activity
         intentFilter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
         intentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
         intentFilter.addAction(WifiManager.EXTRA_WIFI_STATE);
+        intentFilter.addAction("tcpClientReceiver");
 
         registerReceiver(mWifiStateReceiver, intentFilter);
 
@@ -246,10 +220,10 @@ public class WifiCommunication extends Activity
 
             break;
             case R.id.btn_connect_sever:
-                tcpClient = new TcpClient(AP_IP_ADDR,
-                        AP_IP_PORT);
-//                tcpClient = new TcpClient(edtSeverIp.getText().toString(),
-//                        getPort(edtSeverPort.getText().toString()));
+//                tcpClient = new TcpClient(AP_IP_ADDR,
+//                        AP_IP_PORT);
+                tcpClient = new TcpClient(edtSeverIp.getText().toString(),
+                        getPort(edtSeverPort.getText().toString()));
                 exec.execute(tcpClient);
                 break;
             default:
@@ -298,6 +272,17 @@ public class WifiCommunication extends Activity
                             + wifiInfo.getSSID(),
                             Toast.LENGTH_SHORT).show();
                 }
+                return;
+            }
+
+            if(intent.getAction().equals("tcpClientReceiver")){
+                    String msg = intent.getStringExtra("tcpClientReceiver");
+                    Message message = Message.obtain();
+                    message.what = RECEIVE_AP_DATA;
+                    message.obj = msg;
+                    mHandler.sendMessage(message);
+                Toast.makeText(MyApplication.getContext(), "收到模块数据",
+                        Toast.LENGTH_SHORT).show();
             }
         }
     }
