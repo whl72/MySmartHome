@@ -281,8 +281,8 @@ public class WifiCommunication extends Activity
                     message.what = RECEIVE_AP_DATA;
                     message.obj = msg;
                     mHandler.sendMessage(message);
-                Toast.makeText(MyApplication.getContext(), "收到模块数据",
-                        Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MyApplication.getContext(), "收到模块数据",
+//                        Toast.LENGTH_SHORT).show();
             }
         }
     }

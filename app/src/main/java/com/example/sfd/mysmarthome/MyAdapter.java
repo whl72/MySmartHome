@@ -45,8 +45,7 @@ public class MyAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         View mview = null;
 
-        mview = inflater.inflate(R.layout.wifi_item,
-                null);
+        mview = inflater.inflate(R.layout.wifi_item, null);
         ScanResult scanResult = list.get(i);
         TextView wifi_ssid = (TextView) mview.findViewById(R.id.text_ssid);
         ImageView wifi_rssi = (ImageView) mview.findViewById(R.id.image_rssi);

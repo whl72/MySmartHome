@@ -1,15 +1,20 @@
 package com.example.sfd.mysmarthome;
 
+
+import android.app.Activity;
 import android.graphics.Color;
 import android.media.Image;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends Activity
         implements View.OnClickListener{
 
     private View btnDevice;
@@ -24,6 +29,12 @@ public class MainActivity extends AppCompatActivity
     private TextView txtShop;
     private TextView txtNews;
     private TextView txtPerson;
+    private android.app.FragmentManager fragmentManager;
+    private android.app.FragmentTransaction fragmentTransaction;
+    private DeviceFragment deviceFragment;
+    private ShopFragment shopFragment;
+    private NewsFragment newsFragment;
+    private UserFragment userFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +42,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         initViews();
+        initFragment();
     }
 
     private void initViews(){
@@ -52,20 +64,56 @@ public class MainActivity extends AppCompatActivity
         btnPerson.setOnClickListener(this);
     }
 
+    private void initFragment(){
+        deviceFragment = new DeviceFragment();
+        shopFragment = new ShopFragment();
+        newsFragment = new NewsFragment();
+        userFragment = new UserFragment();
+
+        fragmentManager = getFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.content, deviceFragment, "device");
+        fragmentTransaction.add(R.id.content, shopFragment, "shop");
+        fragmentTransaction.add(R.id.content, newsFragment, "news");
+        fragmentTransaction.add(R.id.content, userFragment, "user");
+
+        hideAllFragment();
+
+        fragmentTransaction.show(deviceFragment);
+        fragmentTransaction.commit();
+    }
+
     @Override
-    public void onClick(View view) {
+        public void onClick(View view) {
+        fragmentManager = getFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+
+        hideAllFragment();
+
         switch (view.getId()){
             case R.id.home_layout:
                 setTabSelection(0);
+//                deviceFragment = (DeviceFragment)
+//                        fragmentManager.findFragmentByTag("device");
+                fragmentTransaction.show(deviceFragment).commit();
                 break;
             case R.id.classy_layout:
                 setTabSelection(1);
+//                shopFragment = (ShopFragment)
+//                        fragmentManager.findFragmentByTag("shop");
+                fragmentTransaction.show(shopFragment).commit();
                 break;
             case R.id.message_layout:
                 setTabSelection(2);
+//                newsFragment = (NewsFragment)
+//                        fragmentManager.findFragmentByTag("news");
+                fragmentTransaction.show(newsFragment).commit();
                 break;
             case R.id.mine_layout:
                 setTabSelection(3);
+//                userFragment = (UserFragment)
+//                        fragmentManager.findFragmentByTag("user");
+                fragmentTransaction.show(userFragment).commit();
                 break;
             default:
                 break;
@@ -111,5 +159,33 @@ public class MainActivity extends AppCompatActivity
         txtNews.setTextColor(Color.parseColor("#7c7c7c"));
         imgPerson.setImageResource(R.drawable.mine);
         txtPerson.setTextColor(Color.parseColor("#7c7c7c"));
+    }
+
+    private void hideAllFragment(){
+        fragmentTransaction.hide(deviceFragment);
+        fragmentTransaction.hide(shopFragment);
+        fragmentTransaction.hide(newsFragment);
+        fragmentTransaction.hide(userFragment);
+    }
+
+    /**
+     * 将所有的Fragment都置为隐藏状态。
+     *
+     * @param transaction
+     *            用于对Fragment执行操作的事务
+     */
+    private void hideFragments(FragmentTransaction transaction) {
+//        if (deviceFragment != null) {
+//            transaction.hide(deviceFragment);
+//        }
+//        if (contactsFragment != null) {
+//            transaction.hide(contactsFragment);
+//        }
+//        if (newsFragment != null) {
+//            transaction.hide(newsFragment);
+//        }
+//        if (settingFragment != null) {
+//            transaction.hide(settingFragment);
+//        }
     }
 }
