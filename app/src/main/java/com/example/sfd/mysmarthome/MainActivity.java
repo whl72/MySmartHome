@@ -78,9 +78,8 @@ public class MainActivity extends Activity
         fragmentTransaction.add(R.id.content, userFragment, "user");
 
         hideAllFragment();
-
-        fragmentTransaction.show(deviceFragment);
-        fragmentTransaction.commit();
+        setTabSelection(0);
+        fragmentTransaction.show(deviceFragment).commit();
     }
 
     @Override
