@@ -83,7 +83,7 @@ public class MainActivity extends Activity
     }
 
     @Override
-        public void onClick(View view) {
+    public void onClick(View view) {
         fragmentManager = getFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
 

@@ -4,23 +4,63 @@
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
+    <!--<RelativeLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="35dp">-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/text_ssid"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_alignParentLeft="true"/>-->
+        <!--<ImageView-->
+            <!--android:id="@+id/image_rssi"-->
+            <!--android:layout_width="20sp"-->
+            <!--android:layout_height="20sp"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_alignParentRight="true"/>-->
+
+    <!--</RelativeLayout>-->
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="35dp">
+        android:layout_height="75dp">
 
-        <TextView
-            android:id="@+id/text_ssid"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"/>
         <ImageView
-            android:id="@+id/image_rssi"
-            android:layout_width="20sp"
-            android:layout_height="20sp"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
             android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"/>
+            android:background="@drawable/std_lifeline_icon_socket"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="70dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/text_ssid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"/>
+
+                <TextView
+                    android:id="@+id/text_bssid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
 
     </RelativeLayout>
+
 
 </LinearLayout>

@@ -140,12 +140,15 @@ public class WifiAdmin {
         }else {
             mWifiList = new ArrayList();
             for (ScanResult result : results) {
-                if (result.SSID == null || result.SSID.length() == 0 || result.capabilities.contains("[IBSS]")) {
+                if (result.SSID == null || result.SSID.length() == 0
+                        || result.capabilities.contains("[IBSS]")){
+//                        || (-1 == result.SSID.indexOf("ORE_"))) {//把非ORE的设备过滤掉
                     continue;
                 }
                 boolean found = false;
                 for (ScanResult item : mWifiList) {
-                    if (item.SSID.equals(result.SSID) && item.capabilities.equals(result.capabilities)) {
+                    if (item.SSID.equals(result.SSID) &&
+                            item.capabilities.equals(result.capabilities)) {
                         found = true;
                         break;
                     }

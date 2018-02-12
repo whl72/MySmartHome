@@ -45,14 +45,24 @@ public class MyAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         View mview = null;
 
+//        mview = inflater.inflate(R.layout.wifi_item, null);
+//        ScanResult scanResult = list.get(i);
+//        TextView wifi_ssid = (TextView) mview.findViewById(R.id.text_ssid);
+//        ImageView wifi_rssi = (ImageView) mview.findViewById(R.id.image_rssi);
+//        wifi_ssid.setText(scanResult.SSID);
+//        WifiAdmin.level = WifiManager.calculateSignalLevel(scanResult.level, 5);
+//        wifi_rssi.setImageResource(R.drawable.level_list);
+//        wifi_rssi.setImageLevel(WifiAdmin.level);
+
+
         mview = inflater.inflate(R.layout.wifi_item, null);
         ScanResult scanResult = list.get(i);
         TextView wifi_ssid = (TextView) mview.findViewById(R.id.text_ssid);
-        ImageView wifi_rssi = (ImageView) mview.findViewById(R.id.image_rssi);
+        TextView wifi_bssi = (TextView) mview.findViewById(R.id.text_bssid);
         wifi_ssid.setText(scanResult.SSID);
-        WifiAdmin.level = WifiManager.calculateSignalLevel(scanResult.level, 5);
-        wifi_rssi.setImageResource(R.drawable.level_list);
-        wifi_rssi.setImageLevel(WifiAdmin.level);
+        wifi_bssi.setText(scanResult.BSSID);
+
+
 
         return mview;
     }
