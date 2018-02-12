@@ -31,7 +31,9 @@
         <service
             android:name=".SearchDeviceService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+
+        <activity android:name=".AddDeviceActivity"></activity>
     </application>
 
 </manifest>

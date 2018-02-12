@@ -2,7 +2,9 @@ package com.example.sfd.mysmarthome;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.wifi.ScanResult;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -73,7 +75,24 @@ public class DeviceSearchActivity extends Activity
                     btnSearch.setAnimation(animation);
                     btnSearch.startAnimation(animation);
                 }
-
+                //这种方式会导致程序崩溃，因为涉及到子线程更新UI了
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        try {
+//                            Thread.sleep(5000);
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
+//                        btnSearch.clearAnimation();
+//                    }
+//                }).start();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        btnSearch.clearAnimation();
+                    }
+                },5000);
 
                 mWifiAdmin.startWifiScan(DeviceSearchActivity.this);
                 mWifiList=mWifiAdmin.getWifiList();
@@ -83,7 +102,10 @@ public class DeviceSearchActivity extends Activity
                 }
                 break;
             case R.id.btn_hand_add:
-                btnSearch.clearAnimation();
+                Intent intent = new Intent();
+                intent.setClass(DeviceSearchActivity.this,
+                                AddDeviceActivity.class);
+                startActivity(intent);
 
                 Toast.makeText(MyApplication.getContext(),
                         "功能暂未开放", Toast.LENGTH_SHORT).show();
