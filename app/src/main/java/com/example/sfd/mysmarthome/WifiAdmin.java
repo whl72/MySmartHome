@@ -13,6 +13,7 @@ import java.util.List;
 
 import static com.example.sfd.mysmarthome.WifiCommunication.WIFI_CONNECT_SUCCESS;
 
+
 /**
  * Created by SFD on 2018/2/1.
  */
@@ -26,6 +27,8 @@ public class WifiAdmin {
     private int WIFI_STATE_ENABLING     = 2;
     private int WIFI_STATE_ENABLED      = 3;
     private int WIFI_STATE_UNKNOWN      = 4;
+
+//    public static final int WIFI_CONNECT_SUCCESS = 1;
 
     public static int level;
 
@@ -214,11 +217,11 @@ public class WifiAdmin {
         Log.d(TAG, "a--"+wcgID);
         Log.d(TAG, "b--"+b);
 
-        if(b == true){
-            MyMessage.sendMyMessage(WIFI_CONNECT_SUCCESS);
-//            Toast.makeText(MyApplication.getContext(), "连接AP成功",
-//                    Toast.LENGTH_SHORT).show();
-        }
+//        if(b == true){
+//            MyMessage.sendMyMessage(WIFI_CONNECT_SUCCESS);
+////            Toast.makeText(MyApplication.getContext(), "连接AP成功",
+////                    Toast.LENGTH_SHORT).show();
+//        }
     }
 
     //断开指定ID的网络
