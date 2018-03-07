@@ -79,14 +79,14 @@ public class DeviceSearchActivity extends Activity
             public void handleMessage(Message msg) {
                 switch (msg.what){
                     case WIFI_CONNECT_SUCCESS:
-                        tcpClient = new TcpClient(AP_IP_ADDR.toString(),
-                                AP_IP_PORT);
-                        exec.execute(tcpClient);
-
-                        Intent intent = new Intent();
-                        intent.setClass(DeviceSearchActivity.this,
-                                AddDeviceActivity.class);
-                        startActivity(intent);
+//                        tcpClient = new TcpClient(AP_IP_ADDR.toString(),
+//                                AP_IP_PORT);
+//                        exec.execute(tcpClient);
+//
+//                        Intent intent = new Intent();
+//                        intent.setClass(DeviceSearchActivity.this,
+//                                AddDeviceActivity.class);
+//                        startActivity(intent);
                         break;
                     case SEND_AP_DATA:
 //                        textReceive.append("Tx: "+msg.obj.toString()+"\r\n");
@@ -228,8 +228,17 @@ public class DeviceSearchActivity extends Activity
                     if(((wifiInfo.getSSID().indexOf("ORE_") != -1)
                             || (wifiInfo.getSSID().indexOf("ore_") != -1))
                             &&(btn_connect_ap_flag == true)){
-                        MyMessage.sendMyMessage(WIFI_CONNECT_SUCCESS);
+//                        MyMessage.sendMyMessage(WIFI_CONNECT_SUCCESS);
                         btn_connect_ap_flag = false;
+
+//                        tcpClient = new TcpClient(AP_IP_ADDR.toString(),
+//                                AP_IP_PORT);
+//                        exec.execute(tcpClient);
+
+                        intent = new Intent();
+                        intent.setClass(DeviceSearchActivity.this,
+                                AddDeviceActivity.class);
+                        startActivity(intent);
                     }
 
                     //获取当前wifi名称
